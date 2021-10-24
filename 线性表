@@ -1,0 +1,74 @@
+#include <stdio.h>
+
+//下面是定义线性表 
+typedef struct LNode *List;
+struct LNode  //定义结构体 
+{
+	ElementType Data [MAXSIZE];
+	int Last;  //指示线性表中的最后一个元素 
+};
+
+struct LNode L;
+List Ptrl;  //线性表结构体的指针 
+
+//线性表的初始化，建立空的顺序表 
+List MakeEmpty()
+{
+	List PtrL;
+	PtrL=(List)malloc(sizeof(struct LNode)); //申请存储空间
+	PtrL->Last = -1;  //表中无元素 
+	return PtrL; 
+}
+
+//线性表中查找某一个数
+int Find (ElementType X,List PtrL)
+{
+	int i=0;
+	while (i<=PtrL->Last && PtrL->Data[i] != X)
+		i++;
+	if (i>PtrL->Last)
+		return -1;   //到最后一个都没有找到，返回-1 
+	else
+		return i;  //找到了，返回找到的位置 
+		
+ } 
+ 
+//线性表的插入
+void Insert(ElementType X,int i,List PtrL)
+{
+	int j;
+	if(PtrL->Last == MAXSIZE-1)  //表空间已满，说明不能再插入 
+	{
+		printf("表满\n");
+		return;
+	}
+	if (i<1 || i>PtrL->Last+2)   //检查插入位置的合法性(为什么是最后一个位置加上2？) 
+	{
+		printf("位置不合法\n");
+		return;
+	}
+	for (j=PtrL->Last;j>=i-1)
+	{
+		PtrL->Data[j+1]=PtrL->Data[j];//将aj~an倒序向后移动 
+	}
+	PtrL->Data[i-1]=X; //新元素插入 
+	PtrL->Last++;      //Last仍然指向最后元素
+	return; 
+}
+
+//线性表的删除
+void Delete(int i,List PtrL)
+{
+	int j;
+	if (i<1 ||i>PtrL->Last+1)//检查空表及删除位置的合法性 
+	{
+		pritnf("不存在第%d个元素",i);
+		return;
+	}
+	for (j=i;j<PtrL->Last;j++)
+	{
+		PtrL->Data[j+1]=PtrL->Data[j]; //向后移一位 
+	}
+	PtrL->Last--;  //?Last仍指向最后一个元素 
+	return;
+}
